@@ -7,4 +7,5 @@ public class Singleton : MonoBehaviour
     public static GameManager gm;
     public static Shooter shooter;
     public static ObjectSpawner objectSpawner;
+    public static AudioManager audioManager;
 }

@@ -53,29 +53,37 @@ public class GameManager : Singleton
     public void SetBullet(Bullet bullet)
     {
         currnetBullet = bullet;
-        currnetBullet.funcDestroy += ShootTheTarget;
+        currnetBullet.funcDestroy += BulletDestroyed;
+        currnetBullet.mainCamera = mainCamera;
     }
 
-    public void ShootTheTarget()
+    public void BulletDestroyed(bool isHit)
     {
-        StartCoroutine(Shot());
+        if (isHit)
+            StartCoroutine(Shot());
+        else
+        {
+            if(mainCamera != null)
+                mainCamera.transform.position = CameraOriginPos;
+        }
     }
 
     IEnumerator Shot()
     {
         yield return new WaitForSeconds(2f);
         mainCamera.transform.position = CameraOriginPos;
-        yield return ChangeColor(imgCurrentBright, imgCurrentBright.color, new Color(1, 1, 1, (objectSpawner.destroyedTargetCount / (float)ObjectSpawner.MaxTargetCount)), 2f);
+        float value = (objectSpawner.destroyedTargetCount / (float)ObjectSpawner.MaxTargetCount);
+        yield return ChangeColor(mainCamera.backgroundColor, new Color(value, value, value), 2f);
         gameState = GameState.Aiming;
     }
 
-    IEnumerator ChangeColor(Image img, Color colorOrigin,  Color colorDestination, float duration)
+    IEnumerator ChangeColor(Color colorOrigin,  Color colorDestination, float duration)
     {
-        img.color = colorOrigin;
+        mainCamera.backgroundColor = colorOrigin;
         float time = 0f;
         while(time < duration)
         {
-            img.color = Color.Lerp(colorOrigin, colorDestination, time / duration);
+            mainCamera.backgroundColor = Color.Lerp(colorOrigin, colorDestination, time / duration);
             time += Time.deltaTime;
             yield return null;
         }

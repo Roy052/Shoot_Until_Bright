@@ -8,7 +8,12 @@ public class Target : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        Bullet tempBullet = collision.GetComponent<Bullet>();
+        if (tempBullet != null)
+            tempBullet.isHit = true;
+
         Destroy(collision.gameObject);
+        Singleton.audioManager.PlaySFX(SFX.Broke);
         StartCoroutine(OnHit());
     }
 

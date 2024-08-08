@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class Shooter : Singleton
 {
     const float DistInventory = 180f;
-    const float Speed = 0.05f;
+    const float Speed = 0.1f;
 
     static Vector2 Center = new Vector2(0, Screen.height/2);
 
@@ -54,10 +54,12 @@ public class Shooter : Singleton
         if (gm.gameState == GameState.Aiming)
             bulletCount--;
 
-        GameObject temp = Instantiate(objBullet, objBullet.transform.position, Quaternion.Euler(0, 0, Mathf.Atan2(dir.y, dir.x) * 180 / Mathf.PI), objBullet.transform.parent);
+        GameObject temp = Instantiate(objBullet, objBullet.transform.position, Quaternion.Euler(0, 0, Mathf.Atan2(dir.y, dir.x) * 180 / Mathf.PI - 90f), objBullet.transform.parent);
         temp.SetActive(true);
         temp.GetComponent<Rigidbody2D>().AddForce(dir * Speed);
         Bullet tempBullet = temp.GetComponent<Bullet>();
         gm.SetBullet(tempBullet);
+
+        audioManager.PlaySFX(SFX.Shoot);
     }
 }

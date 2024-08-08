@@ -34,14 +34,14 @@ public class ObjectSpawner : Singleton
         List<int> distances = new List<int>();
 
         //1. Spawn Target
-        for (int i = 0; i < MaxTargetCount; i++)
+        for (int i = 1; i < MaxTargetCount; i++)
         {
-            int tempDist = Random.Range((i + 1) * 30 - 5, (i + 1) * 30 + 5);
-
+            int tempDist = Random.Range((i + 1) * 12 - 3, (i + 1) * 12 + 3);
             float angle = Random.Range(-45f, 45f);
-            GameObject temp = Instantiate(objTarget, new Vector3(tempDist * Mathf.Cos(angle), tempDist * Mathf.Sin(angle)), Quaternion.Euler(0, 0, 0), objTarget.transform.parent);
+            GameObject temp = Instantiate(objTarget, new Vector3(tempDist * Mathf.Cos(angle * Mathf.Deg2Rad), tempDist * Mathf.Sin(angle * Mathf.Deg2Rad)), Quaternion.Euler(0, 0, 0), objTarget.transform.parent);
             temp.SetActive(true);
             targets.Add(temp.GetComponent<Target>());
+            Debug.Log($"{i}th Object Distance = {temp.transform.position.magnitude}");
         }
 
         //2. Spawn Obstacle
